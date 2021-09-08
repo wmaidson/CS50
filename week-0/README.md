@@ -1,16 +1,3 @@
-## CS50
-
-<p align="center">
-  <a href="#introdução">introdução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#O que é ciência da computação?">O que é ciência da computação?</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#Números representativos">Números representativos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#Texto">Texto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#Imagens, vídeo, sons">Imagens, vídeo, sons</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-   <a href="#Algoritmos">Algoritmos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-   <a href="#Pseudo-código">Pseudo-código</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-   <a href="#Scratch">Scratch</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-</p>
-
 ## introdução
 
 - Esta é a CS50, a introdução da Universidade de Harvard aos empreendimentos intelectuais da ciência da computação e à arte da programação, tanto para grandes quanto para os não grandes, com ou sem experiência anterior em programação. Um curso de nível básico ministrado por David J. Malan, o CS50 ensina os alunos a pensar algoritmicamente e resolver problemas de forma eficiente. Os tópicos incluem abstração, algoritmos, estruturas de dados, encapsulamento, gerenciamento de recursos, segurança, engenharia de software e desenvolvimento web. As linguagens incluem C, Python, SQL e JavaScript, além de CSS e HTML. Conjuntos de problemas inspirados em domínios do mundo real de biologia, criptografia, finanças, ciência forense e jogos. A versão no campus do CS50x, CS50, é o maior curso de Harvard. 
@@ -21,7 +8,7 @@
 - Podemos pensar na solução de problemas como o processo de pegar algumas informações (detalhes sobre nosso problema) e gerar algumas saídas (a solução para nosso problema). A “caixa preta” do meio é a ciência da computação, ou o código que aprenderemos a escrever.
 
 <h1 align="center">
-   <img alt="input_output" src=".github/input_output.png" height="100px" />
+   <img alt="input_output" src=".github/input_output.png" height="600px" />
 </h1>
 
 - Para começar a fazer isso, precisaremos de uma maneira de representar entradas e saídas, para que possamos armazenar e trabalhar com informações de forma padronizada.
@@ -123,7 +110,7 @@ Outros caracteres, como letras com acentos e símbolos em outros idiomas, fazem 
 - Os pontos, ou quadrados, em nossas telas são chamados de **pixels** , e as imagens são compostas por muitos milhares ou milhões desses pixels também. Portanto, usando três bytes para representar a cor de cada pixel, podemos criar imagens. Podemos ver os pixels em um emoji se aumentarmos o zoom, por exemplo:
 
 <h1 align="center">
-   <img alt="emoji_zoomed" src=".github/emoji_zoomed.png" height="100px" />
+   <img alt="emoji_zoomed" src=".github/emoji_zoomed.png" height="600px" />
 </h1>
 
 - A **resolução** de uma imagem é o número de pixels que existe, horizontal e verticalmente, portanto, uma imagem de alta resolução terá mais pixels e exigirá mais bytes para ser armazenada.
