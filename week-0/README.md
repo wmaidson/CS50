@@ -93,7 +93,7 @@ Outros caracteres, como letras com acentos e símbolos em outros idiomas, fazem 
 - Por exemplo, o emoji “rosto com lágrimas de alegria” é apenas uma parte `000000011111011000000010`:
 
 <h1 align="center">
-   <img alt="face_with_tears_of_joy" src=".github/face_with_tears_of_joy.png" height="100px" />
+   <img alt="face_with_tears_of_joy" src=".github/face_with_tears_of_joy.png" height="300px" />
 </h1>
 
 ## Imagens, vídeo, sons
