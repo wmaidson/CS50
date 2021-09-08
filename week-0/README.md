@@ -30,7 +30,7 @@ Cada dígito binário também é chamado de **bit** .
 - Com três lâmpadas, podemos acendê-las em padrões diferentes e contar de 0 (com as três apagadas) a 7 (com as três acesas):
 
 <h1 align="center">
-   <img alt="lightbulb_3" src=".github/lightbulb_3.png" height="100px" />
+   <img alt="lightbulb_3" src=".github/lightbulb_3.png" height="300px" />
 </h1>
 
 - Dentro dos computadores modernos, não existem lâmpadas, mas milhões de pequenos interruptores chamados **transistores** que podem ser ligados e desligados para representar valores diferentes.
@@ -104,7 +104,7 @@ Outros caracteres, como letras com acentos e símbolos em outros idiomas, fazem 
 - Cada número pode ser um byte, com 256 valores possíveis, portanto, com três bytes, podemos representar milhões de cores. Nossos três bytes de cima representariam um tom escuro de amarelo:
 
 <h1 align="center">
-   <img alt="72_73_33" src=".github/72_73_33.png" height="100px" />
+   <img alt="72_73_33" src=".github/72_73_33.png" height="300px" />
 </h1>
 
 - Os pontos, ou quadrados, em nossas telas são chamados de **pixels** , e as imagens são compostas por muitos milhares ou milhões desses pixels também. Portanto, usando três bytes para representar a cor de cada pixel, podemos criar imagens. Podemos ver os pixels em um emoji se aumentarmos o zoom, por exemplo:
@@ -123,7 +123,7 @@ Outros caracteres, como letras com acentos e símbolos em outros idiomas, fazem 
 - Agora que podemos representar entradas e saídas, podemos trabalhar na resolução de problemas. A caixa preta anterior conterá algoritmos , instruções passo a passo para resolver problemas:
 
 <h1 align="center">
-   <img alt="algorithms" src=".github/algorithms.png" height="100px" />
+   <img alt="algorithms" src=".github/algorithms.png" height="300px" />
 </h1>
 
 - Os humanos também podem seguir algoritmos, como receitas para cozinhar. Ao programar um computador, precisamos ser mais precisos com nossos algoritmos para que nossas instruções não sejam ambíguas ou mal interpretadas.
@@ -134,7 +134,7 @@ Outros caracteres, como letras com acentos e símbolos em outros idiomas, fazem 
 - Na verdade, podemos representar a eficiência de cada um desses algoritmos com um gráfico:
 
 <h1 align="center">
-   <img alt="running_time" src=".github/running_time.png" height="100px" />
+   <img alt="running_time" src=".github/running_time.png" height="300px" />
 </h1>
 
 - Nossa primeira solução, pesquisar uma página por vez, pode ser representada pela linha vermelha: nosso tempo para resolver aumenta linearmente à medida que o tamanho do problema aumenta. n é um número que representa o tamanho do problema, portanto, com n páginas em nossas listas telefônicas, temos que realizar até n etapas para encontrar um nome.
@@ -263,7 +263,7 @@ int main(void)
 - O ambiente de programação do Scratch é um pouco mais amigável:
 
 <h1 align="center">
-   <img alt="scratch" src=".github/scratch.png" height="100px" />
+   <img alt="scratch" src=".github/scratch.png" height="300px" />
 </h1>
 - No canto superior direito, temos um estágio que será mostrado pelo nosso programa, onde podemos adicionar ou alterar planos de fundo, personagens (chamados de sprites no Scratch) e muito mais.
 - À esquerda, temos peças de quebra-cabeça que representam funções ou variáveis, ou outros conceitos, que podemos arrastar e soltar em nossa área de instrução no centro.
@@ -271,75 +271,75 @@ int main(void)
 - Podemos arrastar alguns blocos para fazer o Scratch dizer “olá, mundo”:
 
 <h1 align="center">
-   <img alt="hello_world" src=".github/hello_world.png" height="100px" />
+   <img alt="hello_world" src=".github/hello_world.png" height="300px" />
 </h1>
 - O bloco "quando a bandeira verde é clicada" refere-se ao início do nosso programa (já que há uma bandeira verde acima do estágio que podemos usar para iniciá-lo), e abaixo dela nós encaixamos um bloco "diga" e digitamos "Olá Mundo". E podemos descobrir o que esses blocos fazem explorando a interface e experimentando.
 - Também podemos arrastar o bloco “perguntar e esperar”, com uma pergunta como “Qual é o seu nome?”, E combiná-lo com um bloco “dizer” para a resposta:
 
 <h1 align="center">
-   <img alt="answer" src=".github/answer.png" height="100px" />
+   <img alt="answer" src=".github/answer.png" height="300px" />
 </h1>
 
 - O bloco “responder” é uma variável, ou valor, que armazena o que o usuário do programa digita, e podemos colocá-lo em um bloco “dizer” arrastando e soltando também.
 - Mas não esperamos depois de dizer “Olá” com o primeiro bloco, então podemos usar o bloco “juntar” para combinar duas frases para que nosso gato possa dizer “olá, David”:
 
 <h1 align="center">
-   <img alt="join" src=".github/join.png" height="100px" />
+   <img alt="join" src=".github/join.png" height="300px" />
 </h1>
 
 - Quando tentamos aninhar blocos, ou colocá-los uns dentro dos outros, o Scratch nos ajudará expandindo os locais onde eles podem ser usados.
 - Na verdade, o bloco "dizer" em si é como um algoritmo, onde fornecemos uma entrada de "olá, mundo" e ele produziu a saída de Scratch (o gato) "dizendo" essa frase:
 
 <h1 align="center">
-   <img alt="say_algorithm" src=".github/say_algorithm.png" height="100px" />
+   <img alt="say_algorithm" src=".github/say_algorithm.png" height="300px" />
 </h1>
 - O bloco "perguntar" também recebe uma entrada (a pergunta que queremos fazer) e produz a saída do bloco "responder":
 
 <h1 align="center">
-   <img alt="say_algorithm" src=".github/ask_algorithm.png" height="100px" />
+   <img alt="say_algorithm" src=".github/ask_algorithm.png" height="300px" />
 </h1>
 - Podemos então usar o bloco “responder” junto com nosso próprio texto, “olá,“, como duas entradas para o algoritmo de junção.
 
 <h1 align="center">
-   <img alt="say_algorithm" src=".github/join_algorithm.png" height="100px" />
+   <img alt="say_algorithm" src=".github/join_algorithm.png" height="300px" />
 </h1>
 - ... a saída da qual passamos pode como entrada para o bloco "dizer":
 
 <h1 align="center">
-   <img alt="say_algorithm" src=".github/say_again.png" height="100px" />
+   <img alt="say_algorithm" src=".github/say_again.png" height="300px" />
 </h1>
 
 - No canto inferior esquerdo da tela, vemos um ícone para extensões, e um deles é chamado de Texto para fala. Depois de adicioná-lo, podemos usar o bloco "falar" para ouvir nosso gato falar:
 
 <h1 align="center">
-   <img alt="speak_join" src=".github/speak_join.png" height="100px" />
+   <img alt="speak_join" src=".github/speak_join.png" height="300px" />
 </h1>
 
 - A extensão Text to Speech, graças à nuvem, ou servidores de computador na internet, está convertendo nosso texto em áudio.
 - Podemos tentar fazer o gato dizer miau:
 
 <h1 align="center">
-   <img alt="meow_wait" src=".github/meow_wait.png" height="100px" />
+   <img alt="meow_wait" src=".github/meow_wait.png" height="300px" />
 </h1>
 
 - Podemos dizer miau três vezes, mas agora estamos repetindo blocos indefinidamente.
 - Vamos usar um loop ou um bloco de “repetição”:
 
 <h1 align="center">
-   <img alt="repeat_meow" src=".github/repeat_meow.png" height="100px" />
+   <img alt="repeat_meow" src=".github/repeat_meow.png" height="300px" />
 </h1>
 
 - Agora nosso programa atinge os mesmos resultados, mas com menos blocos. Podemos considerar que ele tem um design melhor: se há algo que queremos mudar, só precisaríamos mudar em um lugar ao invés de três.
 - Podemos fazer com que o gato aponte para o mouse e se mova em direção a ele:
 
 <h1 align="center">
-   <img alt="point_towards" src=".github/point_towards.png" height="100px" />
+   <img alt="point_towards" src=".github/point_towards.png" height="300px" />
 </h1>
 
 - Experimentamos a extensão da caneta, usando o bloco "caneta para baixo" com uma condição:
 
 <h1 align="center">
-   <img alt="draw" src=".github/draw.png" height="100px" />
+   <img alt="draw" src=".github/draw.png" height="300px" />
 </h1>
 
 - Aqui, movemos o gato até o ponteiro do mouse, e se o mouse for clicado, ou para baixo, colocamos a “caneta para baixo”, que desenha. Caso contrário, colocamos a caneta para cima. Repetimos isso muito rapidamente, uma e outra vez, então acabamos com o efeito de desenhar sempre que mantemos o mouse pressionado.
@@ -347,7 +347,7 @@ int main(void)
 - Faremos um programa que pode contar:
 
 <h1 align="center">
-   <img alt="count" src=".github/count.png" height="100px" />
+   <img alt="count" src=".github/count.png" height="300px" />
 </h1>
 
 - Aqui `counter` está uma variável, cujo valor podemos definir, usar e alterar.
@@ -361,26 +361,26 @@ int main(void)
 - Com vários sprites ou personagens, podemos ter diferentes conjuntos de blocos para cada um deles:
 
 <h1 align="center">
-   <img alt="marco" src=".github/marco.png" height="100px" />
+   <img alt="marco" src=".github/marco.png" height="300px" />
 </h1>
 
 - Para um fantoche, temos esses blocos que dizem “Marco!” E, em seguida, um bloco de “evento de transmissão”. Este “evento” é usado para nossos dois sprites se comunicarem, como enviar uma mensagem nos bastidores. Portanto, o nosso outro fantoche pode apenas esperar por este “evento” para dizer “Polo!”:
 
 <h1 align="center">
-   <img alt="polo" src=".github/polo.png" height="100px" />
+   <img alt="polo" src=".github/polo.png" height="300px" />
 </h1>
 
 - Também podemos usar a extensão Translate para dizer algo em outros idiomas:
 
 <h1 align="center">
-   <img alt="translate" src=".github/translate.png" height="100px" />
+   <img alt="translate" src=".github/translate.png" height="300px" />
 </h1>
 
 - Aqui, a saída do bloco “join” é usada como entrada para o bloco “translate”, cuja saída é passada como entrada para o bloco “say”.
 - Agora que sabemos algumas noções básicas, podemos pensar sobre o design ou a qualidade de nossos programas. Por exemplo, podemos querer que o gato mia três vezes com o bloco "repetir":
 
 <h1 align="center">
-   <img alt="repeat_meow" src=".github/repeat_meow.png" height="100px" />
+   <img alt="repeat_meow" src=".github/repeat_meow.png" height="300px" />
 </h1>
 
 - Podemos usar **abstração** , o que simplifica um conceito mais complexo. Neste caso, podemos definir nosso próprio bloco “miau” no Scratch e reutilizá-lo em outro lugar em nosso programa, como visto em [`miau3`](https://scratch.mit.edu/projects/421542702/editor/) . A vantagem é que não precisamos saber como o miado é implementado ou escrito em código, mas apenas usá-lo em nosso programa, tornando-o mais legível.
