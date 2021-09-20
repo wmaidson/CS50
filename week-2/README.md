@@ -133,14 +133,14 @@ int main(void)
 - Usando as teclas para cima e para baixo no terminal, podemos reutilizar comandos do passado sem digitá-los novamente.
 - Clicaremos à esquerda da linha 6 em nosso código e um círculo vermelho aparecerá:
  
-<h1 align=“center”>
-<img alt=“breakpoint” src=".github/breakpoint.png" height=“300px” />
+<h1 align="center">
+<img alt="breakpoint" src=".github/breakpoint.png" height="300px" />
 </h1>
 
 - Agora, se executarmos `debug50 ./buggy0` novamente, veremos o painel do depurador aberto à direita:
 
-<h1 align=“center”>
-<img alt=“debugger_panel” src=".github/debugger_panel.png" height=“300px” />
+<h1 align="center">
+<img alt="debugger_panel" src=".github/debugger_panel.png" height="300px" />
 </h1>
 
 - Vemos que a variável que criamos,, `i` está sob a Local Variablesseção e vemos que há um valor de 0.
@@ -179,14 +179,14 @@ int get_negative_int(void)
 - Mas quando executamos nosso programa, ele continua nos pedindo um número inteiro negativo, mesmo depois de fornecermos um. Vamos definir um ponto de interrupção na linha 10 `int i = get_negative_int();`, já que é a primeira linha de código interessante. Vamos executar `debug50 ./buggy1` e ver na seção Pilha de chamadas do painel de depuração que estamos na `main` função. (A "pilha de chamadas" refere-se a todas as funções que foram chamadas em nosso programa no momento e ainda não retornaram. Até agora, apenas a `main` função foi chamada.)
 - Clicaremos na seta apontando para baixo, Step Into, e o depurador nos levará para a função chamada nessa linha `get_negative_int`,. Vemos a pilha de chamadas atualizada com o `n`ome da função e a variável ncom um valor de `0`:
 
-<h1 align=“center”>
-<img alt=“step_into” src=".github/step_into.png" height=“300px” />
+<h1 align="center">
+<img alt="step_into" src=".github/step_into.png" height="300px" />
 </h1>
 
 - Podemos clicar na seta Passar sobre novamente e ver nser atualizado com `-1`, que é realmente o que inserimos:
 
-<h1 align=“center”>
-<img alt=“step_over” src=".github/step_over.png" height=“300px” />
+<h1 align="center">
+<img alt="step_over" src=".github/step_over.png" height="300px" />
 </h1>
 
 - Clicamos em Step Over novamente e vemos nosso programa voltando para dentro do loop. Nosso `while` loop ainda está em execução, portanto, a condição que ele verifica deve ser `true` imóvel. E vemos que isso `n < 0` é verdade mesmo se inserirmos um número inteiro negativo, então devemos corrigir nosso bug alterando-o para `n >= 0`.
@@ -207,8 +207,8 @@ int get_negative_int(void)
 - Dentro de nossos computadores, temos chips chamados RAM, memória de acesso **aleatório** , que armazena dados para uso de curto prazo, como o código de um programa enquanto está sendo executado ou um arquivo enquanto está aberto. Podemos salvar um programa ou arquivo em nosso disco rígido (ou SSD, unidade de estado sólido) para armazenamento de longo prazo, mas usar RAM porque é muito mais rápido. No entanto, a RAM é volátil ou requer energia para manter os dados armazenados.
 - Podemos pensar nos bytes armazenados na RAM como se estivessem em uma grade:
 
-<h1 align=“center”>
-<img alt=“ram” src=".github/ram.png" height=“300px” />
+<h1 align="center">
+<img alt="ram" src=".github/ram.png" height="300px" />
 </h1>
 
 - Na realidade, existem milhões ou bilhões de bytes por chip.
@@ -237,8 +237,8 @@ int main(void)
 - Enquanto nosso programa está em execução, as três `int` variáveis são armazenadas na memória:
 
 
-<h1 align=“center”>
-<img alt=“scores” src=".github/scores.png" height=“300px” />
+<h1 align="center">
+<img alt="scores" src=".github/scores.png" height="300px" />
 </h1>
 
 - Cada um `int` ocupa quatro caixas, representando quatro bytes, e cada byte, por sua vez, é composto de oito bits, 0s e 1s armazenados por componentes elétricos
@@ -392,15 +392,15 @@ int main(void)
 
 - Veremos `72 73 33` impressos e perceberemos que esses caracteres são armazenados na memória da seguinte forma:
 
-<h1 align=“center”>
-<img alt=“characters” src=".github/characters.png" height=“300px” />
+<h1 align="center">
+<img alt="characters" src=".github/characters.png" height="300px" />
 </h1>
 
 - **Strings** são, na verdade, apenas matrizes de caracteres e definidas não em C, mas pela biblioteca CS50. Se tivéssemos uma matriz chamada `s`, cada personagem pode ser acessado com `s[0], s[1]` e assim por diante.
 - E acontece que uma string termina com um caractere especial `'\0'`, ou um byte com todos os bits definidos como 0. Esse caractere é chamado de caractere **nulo** ou NUL. Então, na verdade, precisamos de quatro bytes para armazenar nossa string com três caracteres:
  
- <h1 align=“center”>
-<img alt=“string” src=".github/string.png" height=“300px” />
+ <h1 align="center">
+<img alt="string" src=".github/string.png" height="300px" />
 </h1>
 
 - Podemos usar uma string como uma matriz em nosso programa e imprimir os códigos ASCII, ou valores inteiros, de cada caractere da string: 
@@ -486,8 +486,8 @@ words[1] = "BYE!";
 
 - E na memória, a matriz de strings pode ser armazenada e acessada com:
 
-<h1 align=“center”>
-<img alt=“array_of_strings” src=".github/array_of_strings.png" height=“300px” />
+<h1 align="center">
+<img alt="array_of_strings" src=".github/array_of_strings.png" height="300px" />
 </h1>
 
 - `words[0]` refere-se ao primeiro elemento, ou valor, da `words` matriz, que é uma string e, portanto, `words[0][0]` refere-se ao primeiro elemento dessa string, que é um caractere.
