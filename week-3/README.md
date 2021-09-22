@@ -33,7 +33,7 @@ Olhamos para a memória, visualizando bytes em uma grade e armazenando valores e
 
 ## Pesquisa linear, pesquisa binária
 
-No palco, temos algumas portas de adereço, com números escondidos atrás delas. Como um computador só pode olhar para um elemento de cada vez em um array, só podemos abrir uma porta de cada vez.
+- No palco, temos algumas portas de adereço, com números escondidos atrás delas. Como um computador só pode olhar para um elemento de cada vez em um array, só podemos abrir uma porta de cada vez.
 Se quisermos procurar o número zero, por exemplo, teríamos que abrir uma porta por vez, e se não soubéssemos nada sobre os números atrás das portas, o algoritmo mais simples seria ir da esquerda para a direita.
 Então, podemos escrever pseudocódigo para pesquisa linear com:
 
