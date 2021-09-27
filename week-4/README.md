@@ -342,3 +342,404 @@ int main(void)
 - Também poderíamos verificar se `t` tem um comprimento, antes de tentar colocar o primeiro caractere em maiúscula.
 - Finalmente, devemos **liberar** a memória que alocamos anteriormente, o que a marca como utilizável novamente por algum outro programa. Chamamos a `free` função e passamos o ponteiro `t`, já que terminamos com aquele pedaço de memória. ( `get_string` também, chamadas `malloc` para alocar memória para strings e chamadas `free` pouco antes do `main` retorno da função.)
 - Na verdade, também podemos usar a `strcpy` função, da biblioteca de strings do C, com, em `strcpy(t, s);` vez de nosso loop, para copiar a string `s`para `t.`
+
+## Valgrind
+
+- `valgrind` é uma ferramenta de linha de comando que podemos usar para executar nosso programa e ver se há algum **vazamento de memória** ou memória que alocamos sem liberar, o que pode eventualmente fazer com que o computador fique sem memória.
+Vamos construir uma string, mas alocar menos do que precisamos em `memory.c:`
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char *s = malloc(3);
+    s[0] = 'H';
+    s[1] = 'I';
+    s[2] = '!';
+    s[3] = '\0';
+    printf("%s\n", s);
+}
+```
+
+- Também não liberamos a memória que alocamos.
+- Executaremos `valgrind ./memory` após a compilação e veremos muitos resultados, mas podemos executar `help50 valgrind ./memory` para ajudar a explicar algumas dessas mensagens. Para este programa, vemos trechos como “Gravação inválida de tamanho 1”, “Leitura inválida de tamanho 1” e, finalmente, “3 bytes em 1 bloco são definitivamente perdidos”, com números de linha próximos. Na verdade, estamos escrevendo para a memória, o `s[3]` que não faz parte do que alocamos originalmente `s`. E quando imprimimos `s`, estamos lendo `s[3]` também. E, finalmente, `s` não é liberado ao final do nosso programa.
+Podemos ter certeza de alocar o número certo de bytes e liberar memória no final:
+
+- Podemos ter certeza de alocar o número certo de bytes e liberar memória no final:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char *s = malloc(4);
+    s[0] = 'H';
+    s[1] = 'I';
+    s[2] = '!';
+    s[3] = '\0';
+    printf("%s\n", s);
+    free(s);
+}
+```
+
+- Agora, valgrindnão mostra nenhuma mensagem de aviso.
+
+## Valores de lixo
+
+- Vamos dar uma olhada no seguinte:
+
+```c
+int main(void)
+{
+    int *x;
+    int *y;
+
+    x = malloc(sizeof(int));
+
+    *x = 42;
+    *y = 13;
+
+    y = x;
+
+    *y = 13;
+}
+```
+
+
+- Declaramos dois ponteiros para inteiros `x` e `y`, mas não atribuímos valores a eles. Usamos `malloc` para alocar memória suficiente para um inteiro com `sizeof(int)` e armazená-lo em `x. *x = 42` vai para o endereço `x` aponta para, e define esse local na memória para o valor 42.
+- Com `*y = 13`, estamos tentando colocar o valor 13 nos ypontos de endereço para. Mas, como nunca atribuímos yum valor, ele tem um **valor lixo**, ou qualquer valor desconhecido que estava na memória, de qualquer programa que estava sendo executado em nosso computador antes. Então, quando tentamos ir para o valor lixo em `y` como um endereço, estamos indo para algum endereço desconhecido, que provavelmente causará uma falha de segmentação ou segfault.
+- Assistimos [`Pointer Fun with Binky`](https://www.youtube.com/watch?v=3uLKjb973HU) , um vídeo animado que demonstra os conceitos do código acima.
+- Podemos imprimir valores inúteis, declarando uma matriz, mas não definindo nenhum de seus valores:
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int scores[3];
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%i\n", scores[i]);
+    }
+}
+```
+
+- Quando compilamos e executamos este programa, vemos vários valores impressos.
+
+## Troca
+
+- Vamos tentar trocar os valores de dois inteiros.
+ 
+```c
+#include <stdio.h>
+
+void swap(int a, int b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(x, y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int a, int b)
+{
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+```
+
+- No mundo real, se tivéssemos um líquido vermelho em um copo e um líquido azul em outro e quiséssemos trocá-los, precisaríamos de um terceiro copo para conter temporariamente um dos líquidos, talvez o vidro vermelho. Então, podemos derramar o líquido azul no primeiro copo e, finalmente, o líquido vermelho do copo temporário no segundo.
+- Em nossa `swap` função, temos uma terceira variável para usar também como espaço de armazenamento temporário. Colocamos `a` em `tmp` e, em seguida, definimos `a` o valor de `b` e, finalmente, `b` podemos ser alterados para o valor original de `a`, agora em `tmp`.
+- Mas, se tentamos usar essa função em um programa, não vemos nenhuma mudança. Acontece que a `swap` função obtém suas próprias variáveis `a` e , `b` quando são passadas, são cópias de `x` e `y`, portanto, alterar esses valores não altera o `x` e `y` na `main` função.
+
+## Layout de memória
+
+- Na memória do nosso computador, os diferentes tipos de dados que precisam ser armazenados para o nosso programa são organizados em diferentes seções:
+
+<h1 align="center">
+   <img alt="memory_layout" src=".github/memory_layout.png" height="300px" />
+</h1>
+
+- A seção de **código de máquina** é o código binário do nosso programa compilado. Quando executamos nosso programa, esse código é carregado no “topo” da memória.
+- Logo abaixo, ou na próxima parte da memória, estão as **variáveis globais** que declaramos em nosso programa.
+- A seção de **heap** é uma área vazia de onde `malloc` podemos obter memória livre para nosso programa usar. Como chamamos `malloc`, começamos a alocar memória de cima para baixo.
+- A seção de **pilha** é usada por funções em nosso programa conforme são chamadas e cresce para cima. Por exemplo, nossa `main` função está na parte inferior da pilha e tem as variáveis locais `x`e `y`. A `swap` função, quando é chamado, tem sua própria área de memória que está no topo do `main`'s, com as variáveis locais `a`, `b` e `tmp`:
+
+<h1 align="center">
+   <img alt="stack" src=".github/stack.png" height="300px" />
+</h1>
+
+- Depois que a função `swap` retorna, a memória que estava usando é liberada para a próxima chamada de função. `x`e `y` são argumentos, portanto, são copiados como `a` e `b` para `swap`, portanto, não vemos nossas alterações novamente `main`.
+- Ao passar o endereço de `x` e `y`, nossa `swap` função pode realmente funcionar:
+
+```c
+#include <stdio.h>
+
+void swap(int *a, int *b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(&x, &y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int *a, int *b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+```
+
+- Os endereços de xe ysão passados de `main`para `swap` com `&x` e `&y`, e usamos a `int *a` sintaxe para declarar que nossa `swap` função recebe ponteiros. Salvamos o valor de `x` para `tmps` eguindo o ponteiro `a` e, em seguida, pegamos o valor de `y` seguindo o ponteiro `b` e armazenamos isso no local que `a` aponta para ( `x` ). Por fim, armazenamos o valor de `tmp`no local apontado por `b`( `y` ) e pronto:
+
+<h1 align="center">
+   <img alt="swap" src=".github/swap.png" height="300px" />
+</h1>
+
+- Se `malloc` pedirmos muita memória, teremos um **estouro de heap** , pois acabamos ultrapassando nosso `heap`. Ou, se chamarmos muitas funções sem retornar delas, teremos um estouro de pilha , onde nossa pilha também tem muita memória alocada.
+Vamos implementar o desenho da pirâmide de Mario, chamando uma função:
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int h);
+
+int main(void)
+{
+    int height = get_int("Height: ");
+    draw(height);
+}
+
+void draw(int h)
+{
+    for (int i = 1; i <= h; i++)
+    {
+        for (int j = 1; j <= i; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+```
+
+- Podemos mudar drawpara ser recursivo:
+
+```c
+void draw(int h)
+{
+    draw(h - 1);
+
+    for (int i = 0; i < h; i++)
+    {
+        printf("#");
+    }
+    printf("\n");
+}
+```
+
+- Quando tentamos compilar isso com `make`, vemos um aviso de que a `draw` função se chamará recursivamente sem parar. Portanto, usaremos `clang` sem as verificações extras e, quando executarmos este programa, obteremos uma falha de segmentação imediatamente. `draw` está chamando a si mesmo continuamente e ficamos sem memória na pilha.
+- Ao adicionar um caso base, a `draw` função irá parar de chamar a si mesma em algum ponto:
+
+```c
+void draw(int h)
+{
+    if (h == 0)
+    {
+        return;
+    }
+
+    draw(h - 1);
+
+    for (int i = 0; i < h; i++)
+    {
+        printf("#");
+    }
+    printf("\n");
+}
+```
+
+- Mas se inserirmos um valor grande o suficiente para a altura, como `2000000000`, ainda ficaremos sem memória, já que estamos chamando `draw` muitas vezes sem retornar.
+- Um **estouro de buffer** ocorre quando passamos do final de um buffer, algum pedaço de memória que alocamos como um array e acessamos a memória que não deveríamos.
+
+## scanf
+
+- Podemos `get_int` nos implementar com uma função de biblioteca C `scanf`:
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int x;
+    printf("x: ");
+    scanf("%i", &x);
+    printf("x: %i\n", x);
+}
+```
+
+- `scanf` assume um formato, `%i` então a entrada é “digitalizada” para esse formato. Também passamos na memória o endereço para onde queremos que essa entrada vá. Mas `scanf` não tem muita verificação de erros, então podemos não obter um número inteiro.
+Podemos tentar obter uma string da mesma maneira:
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char *s;
+    printf("s: ");
+    scanf("%s", s);
+    printf("s: %s\n", s);
+}
+```
+
+- Mas, na verdade, não alocamos nenhuma memória para `s`, portanto, precisamos chamar `malloc` para alocar memória para os caracteres de nossa string. Também podemos usar `char s[4];` para declarar um array de quatro caracteres. Em seguida, sserá tratado como um ponteiro para o primeiro caractere em `scanf` e `printf`.
+- Agora, se o usuário digitar uma string de comprimento 3 ou menos, nosso programa funcionará com segurança. Mas se o usuário digitar uma string mais longa, `scanf` pode estar tentando escrever além do final de nosso array na memória desconhecida, fazendo com que nosso programa trave.
+- `get_string` da biblioteca CS50 aloca continuamente mais memória à medida que `scanf` lê mais caracteres, por isso não tem esse problema.
+
+## arquivos
+
+- Com a capacidade de usar ponteiros, também podemos abrir arquivos, como uma lista telefônica digital:
+ 
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    FILE *file = fopen("phonebook.csv", "a");
+    if (file == NULL)
+    {
+        return 1;
+    }
+
+    char *name = get_string("Name: ");
+    char *number = get_string("Number: ");
+
+    fprintf(file, "%s,%s\n", name, number);
+
+    fclose(file);
+}
+```
+
+- `fopen` é uma nova função que podemos usar para abrir um arquivo. Ele retornará um ponteiro para um novo tipo `FILE`,, de onde podemos ler e escrever. O primeiro argumento é o nome do arquivo, e o segundo argumento é o modo no qual queremos abrir o arquivo ( `r` para leitura, `w` para gravação e `a` para anexar ou adicionar).
+- Adicionaremos uma marca de verificação para sair, caso não possamos abrir o arquivo por algum motivo.
+Depois de obter algumas strings, podemos usar fprintfpara imprimir em um arquivo.
+- Finalmente, fechamos o arquivo com `fclose`.
+- Agora podemos criar nossos próprios arquivos CSV, um arquivo de valores separados por vírgulas (como uma mini planilha), programaticamente.
+
+## Gráficos
+
+- Podemos ler em binário e mapeá-los em pixels e cores, para exibir imagens e vídeos. Com um número finito de bits em um arquivo de imagem, porém, só podemos ampliar até certo ponto antes de começarmos a ver pixels individuais.
+- Com inteligência artificial e aprendizado de máquina, no entanto, podemos usar algoritmos que podem gerar detalhes adicionais que não existiam antes, por adivinhação com base em outros dados.
+- Vejamos um programa que abre um arquivo e nos diz se é um arquivo JPEG, um arquivo de imagem em um formato específico:
+ 
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    // Check usage
+    if (argc != 2)
+    {
+        return 1;
+    }
+
+    // Open file
+    FILE *file = fopen(argv[1], "r");
+    if (!file)
+    {
+        return 1;
+    }
+
+    // Read first three bytes
+    BYTE bytes[3];
+    fread(bytes, sizeof(BYTE), 3, file);
+
+    // Check first three bytes
+    if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff)
+    {
+        printf("Maybe\n");
+    }
+    else
+    {
+        printf("No\n");
+    }
+
+    // Close file
+    fclose(file);
+}
+```
+- Primeiro, definimos a `BYTE` como 8 bits, para que possamos nos referir a um byte como um tipo mais facilmente em C.
+- Em seguida, tentamos abrir um arquivo (verificando se realmente obtemos um arquivo não `NULL` de volta) e lemos os primeiros três bytes do arquivo com `fread`, em um buffer chamado `bytes`.
+- Podemos comparar os primeiros três bytes (em hexadecimal) aos três bytes necessários para iniciar um arquivo JPEG. Se forem iguais, é provável que nosso arquivo seja um arquivo JPEG (embora outros tipos de arquivos ainda possam começar com esses bytes). Mas se eles não forem iguais, sabemos que definitivamente não é um arquivo JPEG.
+- Podemos até copiar arquivos nós mesmos, um byte de cada vez agora:
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    // Ensure proper usage
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: copy SOURCE DESTINATION\n");
+        return 1;
+    }
+
+    // open input file
+    FILE *source = fopen(argv[1], "r");
+    if (source == NULL)
+    {
+        printf("Could not open %s.\n", argv[1]);
+        return 1;
+    }
+
+    // Open output file
+    FILE *destination = fopen(argv[2], "w");
+    if (destination == NULL)
+    {
+        fclose(source);
+        printf("Could not create %s.\n", argv[2]);
+        return 1;
+    }
+
+    // Copy source to destination, one BYTE at a time
+    BYTE buffer;
+    while (fread(&buffer, sizeof(BYTE), 1, source))
+    {
+        fwrite(&buffer, sizeof(BYTE), 1, destination);
+    }
+
+    // Close files
+    fclose(source);
+    fclose(destination);
+    return 0;
+}
+```
+
+- Usamos `argv` para obter argumentos, usando-os como nomes de arquivos para abrir arquivos para ler e escrever.
+- Em seguida, lemos um byte do `source` arquivo em um buffer e gravamos esse byte no destination arquivo. Podemos usar um whileloop para chamar `fread`, que irá parar quando não houver mais bytes para ler.
+- Podemos usar essas habilidades para ler e gravar arquivos, recuperando imagens de um arquivo e adicionando filtros às imagens, alterando os bytes nelas, no conjunto de problemas desta semana!
