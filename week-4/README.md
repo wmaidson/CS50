@@ -108,13 +108,13 @@ Podemos abstrair o valor real dos endereços, uma vez que eles serão diferentes
 - Uma variável declarada com `string s = "HI!";` será armazenada um caractere por vez na memória. E podemos acessar cada caractere com s[0]`, `s[1]`, `s[2]`, e `s[3]`:
 
 <h1 align="center">
-   <img alt="s_array" src=".github/s_array.png" height="300px" />
+   <img alt="s_array" src=".github/s_array.png" height="150" />
 </h1>
 
 - Mas acontece que cada caractere, por estar armazenado na memória, também possui algum endereço único, e `s` na verdade é apenas um ponteiro com o endereço do primeiro caractere:
 
 <h1 align="center">
-   <img alt="s_pointer" src=".github/s_pointer.png" height="300px" />
+   <img alt="s_pointer" src=".github/s_pointer.png" height="150" />
 </h1>
 
 - E a variável `s` armazena o endereço do primeiro caractere da string. O valor `\0` é o único indicador do final da string:
@@ -474,7 +474,7 @@ void swap(int a, int b)
 - A seção de **pilha** é usada por funções em nosso programa conforme são chamadas e cresce para cima. Por exemplo, nossa `main` função está na parte inferior da pilha e tem as variáveis locais `x`e `y`. A `swap` função, quando é chamado, tem sua própria área de memória que está no topo do `main`'s, com as variáveis locais `a`, `b` e `tmp`:
 
 <h1 align="center">
-   <img alt="stack" src=".github/stack.png" height="300px" />
+   <img alt="stack" src=".github/stack.png" height="400px" />
 </h1>
 
 - Depois que a função `swap` retorna, a memória que estava usando é liberada para a próxima chamada de função. `x`e `y` são argumentos, portanto, são copiados como `a` e `b` para `swap`, portanto, não vemos nossas alterações novamente `main`.
@@ -506,7 +506,7 @@ void swap(int *a, int *b)
 - Os endereços de xe ysão passados de `main`para `swap` com `&x` e `&y`, e usamos a `int *a` sintaxe para declarar que nossa `swap` função recebe ponteiros. Salvamos o valor de `x` para `tmps` eguindo o ponteiro `a` e, em seguida, pegamos o valor de `y` seguindo o ponteiro `b` e armazenamos isso no local que `a` aponta para ( `x` ). Por fim, armazenamos o valor de `tmp`no local apontado por `b`( `y` ) e pronto:
 
 <h1 align="center">
-   <img alt="swap" src=".github/swap.png" height="300px" />
+   <img alt="swap" src=".github/swap.png" height="400px" />
 </h1>
 
 - Se `malloc` pedirmos muita memória, teremos um **estouro de heap** , pois acabamos ultrapassando nosso `heap`. Ou, se chamarmos muitas funções sem retornar delas, teremos um estouro de pilha , onde nossa pilha também tem muita memória alocada.
