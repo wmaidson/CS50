@@ -102,3 +102,243 @@ Podemos abstrair o valor real dos endereços, uma vez que eles serão diferentes
    <img alt="pointing" src=".github/pointing.png" height="300px" />
 </h1>
 - No mundo real, podemos ter uma caixa de correio identificada como “p”, entre muitas caixas de correio com endereços. Dentro de nossa caixa de correio, podemos colocar um valor como `0x123`, que é o endereço de alguma outra caixa de correio n, com o endereço `0x123`.
+
+## Strings
+
+- Uma variável declarada com `string s = "HI!";` será armazenada um caractere por vez na memória. E podemos acessar cada caractere com s[0]`, `s[1]`, `s[2]`, e `s[3]`:
+
+<h1 align="center">
+   <img alt="s_array" src=".github/s_array.png" height="300px" />
+</h1>
+
+- Mas acontece que cada caractere, por estar armazenado na memória, também possui algum endereço único, e `s` na verdade é apenas um ponteiro com o endereço do primeiro caractere:
+
+<h1 align="center">
+   <img alt="s_pointer" src=".github/s_pointer.png" height="300px" />
+</h1>
+
+- E a variável `s` armazena o endereço do primeiro caractere da string. O valor `\0` é o único indicador do final da string:
+
+<h1 align="center">
+   <img alt="s_value" src=".github/s_value.png" height="300px" />
+</h1>
+
+- Como o resto dos caracteres estão em uma matriz, consecutivamente, podemos começar no endereço em `s` e continuar lendo um caractere por vez da memória até chegarmos `\0`.
+
+- Vamos imprimir uma string:
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string s = "HI!";
+    printf("%s\n", s);
+}
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string s = "HI!";
+    printf("%s\n", s);
+}
+
+```
+
+- Podemos ver o valor armazenado em `s` com `printf("%p\n", s);` e algo parecido, `0x4006a4` já que estamos imprimindo o endereço na memória do primeiro caractere da string.
+
+- Se acrescentarmos uma outra linha, `printf("%p\n", &s[1]);`, nós, na verdade vamos ver o próximo endereço na memória: `0x4006a5.`
+
+- Acontece que string sé apenas um ponteiro, um endereço para algum caractere na memória.
+
+-  Na verdade, a biblioteca CS50 define um tipo que não existe em C,, `string` as `char *`, com `typedef char *string;`. O tipo personalizado,, `string` é definido como apenas `char *` com `typedef`. Então `string s = "HI!"`é o mesmo que `char *s = "HI!";`. E podemos usar strings em C exatamente da mesma maneira sem a biblioteca CS50, usando `char *`.
+
+## Aritmética de ponteiro
+
+- **A aritmética de ponteiros** são operações matemáticas em endereços com ponteiros.
+Podemos imprimir cada caractere em uma string (usando`char *` diretamente):
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char *s = "HI!";
+    printf("%c\n", s[0]);
+    printf("%c\n", s[1]);
+    printf("%c\n", s[2]);
+}
+```
+
+- Mas podemos ir diretamente para os endereços:
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char *s = "HI!";
+    printf("%c\n", *s);
+    printf("%c\n", *(s+1));
+    printf("%c\n", *(s+2));
+}
+```
+- `*s` vai para o endereço armazenado em `s` e `*(s+1)` vai para o local na memória com um endereço um byte acima, ou o próximo caractere. `s[1]` é um açúcar sintático para `*(s+1)`, equivalente em função, mas mais amigável para o ser humano de ler e escrever.
+Podemos até tentar ir para endereços na memória que não deveríamos, como com `*(s+10000)`, e quando executarmos nosso programa, teremos uma **falha de segmentação** ou travar como resultado de nosso programa tocar na memória em um segmento que não deveria t tenho.
+
+## Compare e copie
+
+- Vamos tentar comparar dois inteiros do usuário:
+ 
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    int i = get_int("i: ");
+    int j = get_int("j: ");
+
+    if (i == j)
+    {
+        printf("Same\n");
+    }
+    else
+    {
+        printf("Different\n");
+    }
+}
+```
+
+- Compilamos e executamos nosso programa, e ele funciona como esperávamos, com os mesmos valores dos dois inteiros nos dando “Mesmo” e valores diferentes “Diferentes”.
+- Quando tentamos comparar duas strings, vemos que as mesmas entradas estão fazendo com que nosso programa imprima "Different":
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+    char *t = get_string("t: ");
+
+    if (s == t)
+    {
+        printf("Same\n");
+    }
+    else
+    {
+        printf("Different\n");
+    }
+}
+```
+
+- Mesmo quando nossas entradas são as mesmas, vemos "Diferente" impresso.
+- Cada “string” é um ponteiro,, `char *` para um local diferente na memória, onde o primeiro caractere de cada string é armazenado. Portanto, mesmo se os caracteres na string forem iguais, isso sempre imprimirá “Diferente”.
+- Por exemplo, nossa primeira string pode estar no endereço `0x123`, a segunda pode estar em `0x456` e `s` terá o valor de `0x123`, apontando para aquele local, e `t` terá o valor de `0x456`, apontando para outro local:
+
+
+
+
+<h1 align="center">
+   <img alt="s_t" src=".github/s_t.png" height="300px" />
+</h1>
+
+- E `get_string`, esse tempo todo, vem retornando apenas um `char *`, ou um ponteiro para o primeiro caractere de uma string do usuário. Como ligamos `get_string` duas vezes, recebemos duas dicas diferentes de volta.
+Vamos tentar copiar uma string:
+
+```c
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+
+    char *t = s;
+
+    t[0] = toupper(t[0]);
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+```
+
+- Pegamos uma string se copiamos o valor de sinto `t`. Em seguida, colocamos a primeira letra em maiúscula `t`.
+Mas quando executamos nosso programa, vemos que ambos se `t` agora estão com letras maiúsculas.
+- Uma vez que definimos `s` e `t` com o mesmo valor, ou o mesmo endereço, eles estão apontando para o mesmo caractere e, portanto, capitalizamos o mesmo caractere na memória!
+- Para realmente fazer uma cópia de uma string, temos que trabalhar um pouco mais e copiar cada caractere spara outro lugar na memória:
+
+- Para realmente fazer uma cópia de uma string, temos que trabalhar um pouco mais e copiar cada caractere spara outro lugar na memória:
+
+```c
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+
+    char *t = malloc(strlen(s) + 1);
+
+    for (int i = 0, n = strlen(s); i < n + 1; i++)
+    {
+        t[i] = s[i];
+    }
+
+    t[0] = toupper(t[0]);
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+```
+
+- Criamos uma nova variável,, `t` do tipo `char *`, com `char *t`. Agora, queremos apontá-lo para um novo bloco de memória grande o suficiente para armazenar a cópia da string. Com **malloc*, alocamos algum número de bytes na memória (que ainda não são usados para armazenar outros valores) e passamos o número de bytes que gostaríamos de marcar para uso. Já sabemos o comprimento de se adicionamos 1 a isso para o caractere nulo de terminação. Portanto, nossa linha final de código é `char *t = malloc(strlen(s) + 1);`.
+- Em seguida, copiamos cada caractere, um de cada vez, com um `for` loop. Usamos `i < n + 1`, uma vez que realmente queremos ir até `n` , o comprimento da string, para garantir que copiaremos o caractere de terminação na string. No loop, configuramos `t[i] = s[i]`, copiando os personagens. Embora possamos usar `*(t+i) = *(s+i)` para o mesmo efeito, é indiscutivelmente menos legível.
+- Agora, podemos colocar em maiúscula apenas a primeira letra de `t`.
+- Podemos adicionar algumas verificações de erros ao nosso programa:
+
+```c
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char *s = get_string("s: ");
+
+    char *t = malloc(strlen(s) + 1);
+    if (t == NULL)
+    {
+        return 1;
+    }
+
+    for (int i = 0, n = strlen(s); i < n + 1; i++)
+    {
+        t[i] = s[i];
+    }
+
+    if (strlen(t) > 0)
+    {
+        t[0] = toupper(t[0]);
+    }
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+
+    free(t);
+}
+```
+
+- Se nosso computador estiver sem memória, `malloc` retornará `NULL` o ponteiro nulo ou um valor especial que indica que não há um endereço para o qual apontar. Portanto, devemos verificar esse caso e sair se `t` estiver `NULL`.
+- Também poderíamos verificar se `t` tem um comprimento, antes de tentar colocar o primeiro caractere em maiúscula.
+- Finalmente, devemos **liberar** a memória que alocamos anteriormente, o que a marca como utilizável novamente por algum outro programa. Chamamos a `free` função e passamos o ponteiro `t`, já que terminamos com aquele pedaço de memória. ( `get_string` também, chamadas `malloc` para alocar memória para strings e chamadas `free` pouco antes do `main` retorno da função.)
+- Na verdade, também podemos usar a `strcpy` função, da biblioteca de strings do C, com, em `strcpy(t, s);` vez de nosso loop, para copiar a string `s`para `t.`
