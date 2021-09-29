@@ -306,7 +306,7 @@ list = n;
 - Com uma matriz classificada, podemos usar a pesquisa binária para encontrar um elemento, começando no meio (amarelo), depois no meio da metade (vermelho) e, finalmente, à esquerda ou à direita (verde), conforme necessário:
 
 <h1 align="center">
-   <img alt="sorted_array" src=".github/sorted_array.png" height="200px" />
+   <img alt="sorted_array" src=".github/sorted_array.png" height="100px" />
 </h1>
 
 - Com um array, podemos acessar elementos aleatoriamente no tempo O (1), uma vez que podemos usar a aritmética para ir para um elemento em qualquer índice.
@@ -314,7 +314,7 @@ list = n;
 - Uma **árvore** é outra estrutura de dados onde cada nó aponta para dois outros nós, um à esquerda (com um valor menor) e um à direita (com um valor maior):
 - 
 <h1 align="center">
-   <img alt="tree" src=".github/tree.png" height="200px" />
+   <img alt="tree" src=".github/tree.png" height="300px" />
 </h1>
 
 - Observe que agora visualizamos essa estrutura de dados em duas dimensões (mesmo que os nós na memória possam estar em qualquer local).
@@ -370,7 +370,7 @@ bool search(node *tree, int number)
 - No entanto, se adicionarmos nós suficientes, nossa árvore de pesquisa pode começar a se parecer com uma lista vinculada:
 
 <h1 align="center">
-   <img alt="imbalanced_tree" src=".github/imbalanced_tree.png" height="200px" />
+   <img alt="imbalanced_tree" src=".github/imbalanced_tree.png" height="300px" />
 </h1>
 
 - Começamos nossa árvore com um nó com valor de `1`, depois adicionamos o nó com valor `2` e, finalmente, adicionamos o nó com valor `3`. Mesmo que essa árvore siga as restrições de uma árvore de pesquisa binária, não é tão eficiente quanto poderia ser.
@@ -392,7 +392,7 @@ Por exemplo, podemos ter muitos nomes e podemos classificá-los em uma matriz co
 - Mas, na pior das hipóteses, todos os nomes podem começar com a mesma letra, então podemos terminar com o equivalente a uma única lista vinculada novamente. Podemos olhar para as duas primeiras letras e alocar baldes suficientes para 26 * 26 valores de hash possíveis, ou mesmo as três primeiras letras, exigindo 26 * 26 * 26 baldes:
 
 <h1 align="center">
-   <img alt="hash_table_three_letters" src=".github/hash_table_three_letters.png" height="300px" />
+   <img alt="hash_table_three_letters" src=".github/hash_table_three_letters.png" height="400px" />
 </h1>
 
 - Agora, estamos usando mais espaço na memória, já que alguns desses depósitos estarão vazios, mas é mais provável que necessitemos apenas uma etapa para procurar um valor, reduzindo nosso tempo de execução para pesquisa.
