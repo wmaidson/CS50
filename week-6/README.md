@@ -102,3 +102,69 @@ import cs50
 ```py
 from cs50 import get_float, get_int, get_string
 ```
+
+## Exemplos
+
+- Como o Python inclui muitos recursos, bem como bibliotecas de código escrito por outros, podemos resolver problemas em um nível mais alto de abstração, em vez de implementar todos os detalhes nós mesmos.
+- Podemos desfocar uma imagem com:
+
+```py
+from PIL import Image, ImageFilter
+
+before = Image.open("bridge.bmp")
+after = before.filter(ImageFilter.BoxBlur(1))
+after.save("out.bmp")
+```
+
+- No Python, incluímos outras bibliotecas com `import`, e aqui vamos `import` os nomes `Image` e `ImageFilter` da `PIL` biblioteca. (Outras pessoas escreveram esta biblioteca, entre outras, e disponibilizaram para todos nós baixarmos e usarmos.)
+- `Imag`e` é uma estrutura que não apenas possui dados, mas funções que podemos acessar com a `.` sintaxe, como com `Image.open`.
+- Abrimos uma imagem chamada `bridge.bmp`, chamamos uma função de filtro de desfoque e salvamos em um arquivo chamado `out.bmp`.
+- E podemos executar isso python `blur.py` depois de salvar em um arquivo chamado `blur.py`.
+- Podemos implementar um dicionário com:
+
+```py
+words = set()
+
+def load(dictionary):
+  file = open(dictionary, "r")
+  for line in file:
+      words.add(line.rstrip())
+  file.close()
+  return True
+
+def check(word):
+    if word.lower() in words:
+        return True
+    else:
+        return False
+
+def size():
+    return len(words)
+
+def unload():
+    return True
+```
+
+- Primeiro, criamos um novo conjunto chamado `words`.
+- Observe que não precisamos de uma `main` função. Nosso programa Python será executado de cima para baixo. Aqui, queremos definir uma função, então usamos `def load()`. `load` terá um parâmetro,, `dictionary` e seu valor de retorno está implícito. Abrimos o arquivo com `open` e iteramos sobre as linhas do arquivo com apenas `for line in file:`. Em seguida, removemos a nova linha no final de `line` e a adicionamos ao nosso conjunto `words`. Observe que `line` é uma string, mas tem uma `.rstrip` função que podemos chamar.
+- Então, `check` podemos apenas pedir `if word.lower() in words`. Pois `size`, podemos usar `len` para contar o número de elementos em nosso conjunto e, finalmente, pois `unload`, não precisamos fazer nada, já que o Python gerencia a memória para nós.
+- Acontece que, embora implementar um programa em Python seja mais simples para nós, o tempo de execução de nosso programa em Python é mais lento do que nosso programa em C, pois a linguagem tem que trabalhar mais para nós com soluções de uso geral, como para memória gestão.
+- Além disso, Python também é o nome de um programa chamado **interpretador** , que lê nosso código-fonte e o traduz para um código que nossa CPU pode entender, linha por linha.
+Por exemplo, se nosso pseudocódigo da semana 0 estava em espanhol e não entendíamos espanhol, teríamos que traduzi-lo lentamente, linha por linha, para o inglês antes de podermos pesquisar um nome em uma lista telefônica:
+
+```py
+1   Recoge guía telefónica
+2   Abre a la mitad de guía telefónica
+3   Ve la página
+4   Si la persona está en la página
+5       Llama a la persona
+6   Si no, si la persona está antes de mitad de guía telefónica
+7       Abre a la mitad de la mitad izquierda de la guía telefónica
+8       Regresa a la línea 3
+9   Si no, si la persona está después de mitad de guía telefónica
+10      Abre a la mitad de la mitad derecha de la guía telefónica
+11      Regresa a la línea 3
+12  De lo contrario
+13      Abandona
+```
+- Portanto, dependendo de nossos objetivos, também teremos que considerar a troca de tempo humano ao escrever um programa que é mais eficiente, versus o tempo de execução do programa.
