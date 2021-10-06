@@ -24,7 +24,6 @@
 - `example.com` é o nome de domínio, onde `.com` é o domínio de nível superior, convencionalmente indicando o “tipo” de site, como um site comercial para `.com`, ou uma organização para `.org`. Agora, existem centenas de domínios de nível superior, e suas restrições variam quanto a quem pode usá-los, mas muitos deles permitem que qualquer pessoa se registre para um domínio.
 - `www` é o nome do host que, por convenção, nos indica que se trata de um serviço “world wide web”. Não é obrigatório, então hoje muitos sites não estão configurados para incluí-lo.
 - Finalmente, o `/` no final é uma solicitação para o arquivo padrão, como o index.htmlqual o servidor web irá responder.
-Uma solicitação HTTP começará com:
 - Uma solicitação HTTP começará com:
 
 ```
