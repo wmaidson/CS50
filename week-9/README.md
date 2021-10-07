@@ -463,7 +463,7 @@ db = SQL("sqlite:///froshims.db")
 - No terminal do IDE, podemos executar `sqlite3 froshims.db` para abrir o banco de dados e usar o `.schema` comando para ver a tabela com colunas de `id`, namee sport, que foi criado com antecedência.
 - Agora, em nossas rotas, podemos inserir e selecionar linhas com SQL:
 
-```
+```py
 @app.route("/register", methods=["POST"])
 def register():
 
@@ -530,7 +530,7 @@ mail = Mail(app)
 - Acontece que podemos fornecer detalhes de configuração como nome de usuário e senha e servidor de e-mail, neste caso do Gmail, para a Mailvariável, que enviará e-mail para nós.
 - Finalmente, em nossa `register` rota, podemos enviar um e-mail para o usuário:
 
-```
+```py
 @app.route("/register", methods=["POST"])
 def register():
 
