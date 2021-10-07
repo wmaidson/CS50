@@ -554,3 +554,200 @@ def register():
 <input autocomplete="off" name="email" placeholder="Email" type="email">
 ```
 - Agora, se reiniciarmos nosso servidor e usarmos o formulário para fornecer um e-mail, veremos que de fato recebemos um!
+
+## Sessões
+
+- As **sessões** são como os servidores da web lembram as informações sobre cada usuário, o que ativa recursos como permitir que os usuários permaneçam logados.
+- Acontece que os servidores podem enviar outro cabeçalho em uma resposta, chamado `Set-Cookie`:
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/html
+Set-Cookie: session=value
+...
+```
+
+- **Cookies** são pequenos pedaços de dados de um servidor web que o navegador salva para nós. Em muitos casos, eles são grandes números aleatórios ou sequências usadas para identificar e rastrear um usuário de forma exclusiva entre as visitas.
+- Nesse caso, o servidor está pedindo ao nosso navegador para definir um cookie para esse servidor, chamado sessioncom um valor de value.
+- Então, quando o navegador fizer outra solicitação ao mesmo servidor, ele enviará de volta os cookies que o mesmo servidor configurou antes:
+
+```
+GET / HTTP/1.1
+Host: gmail.com
+Cookie: session=value
+```
+
+- No mundo real, os parques de diversões podem dar a você um carimbo manual para que você possa voltar depois de sair. Da mesma forma, nosso navegador está apresentando nossos cookies de volta ao servidor da web, para que ele possa se lembrar de quem somos.
+- As empresas de publicidade podem definir cookies de vários sites, a fim de rastrear os usuários em todos eles. No modo de navegação anônima, por outro lado, o navegador não envia cookies definidos anteriormente.
+- No Flask, podemos usar a `flask_session` biblioteca para gerenciar isso para nós:
+
+```py
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
+
+app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+
+@app.route("/")
+def index():
+    if not session.get("name"):
+        return redirect("/login")
+    return render_template("index.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
+```
+
+- Vamos configurar a biblioteca de sessão para usar o sistema de arquivos do IDE e usar sessioncomo um dicionário para armazenar o nome de um usuário. Acontece que o Flask usará cookies HTTP para nós, para manter essa sessionvariável para cada usuário que visita nosso servidor web. Cada visitante obterá sua própria sessionvariável, embora pareça ser global em nosso código.
+- Para nossa `/` rota padrão , redirecionaremos para `/login` se ainda não houver um nome definido sessionpara o usuário e, caso contrário, mostraremos um index.htmlmodelo padrão .
+- Para o nosso `/login` caminho, vamos definir `name` em `session` que o valor do formulário enviado via POST, e, em seguida, redirecionar para a rota padrão. Se visitamos a rota via GET, renderizaremos o formulário de login em login.html.
+- Para a `/logou` trota, podemos limpar o valor de `name` in `session` definindo-o como Nonee redirecionando para `/` novamente.
+- Geralmente, também precisaremos de um `requirements.txt` que inclua os nomes das bibliotecas que desejamos usar, para que possam ser instaladas em nosso aplicativo, mas as que usamos aqui foram pré-instaladas no IDE.
+- Em nosso `login.html`, teremos um formulário com apenas um nome:
+
+```
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <form action="/login" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
+        <input type="submit" value="Log In">
+    </form>
+
+{% endblock %}
+```
+
+- E no nosso index.html, podemos verificar se session.nameexiste, e mostrar diferentes conteúdos:
+
+```
+{% extends "layout.html" %}
+
+{% block body %}
+
+    {% if session.name %}
+        You are logged in as {{ session.name }}. <a href="/logout">Log out</a>.
+    {% else %}
+        You are not logged in. <a href="/login">Log in</a>.
+    {% endif %}
+
+{% endblock %}
+```
+
+- Quando reiniciamos nosso servidor, acessamos seu URL e logamos, podemos ver na aba Rede que nosso navegador está realmente enviando um Cookie:cabeçalho na solicitação:
+
+<h1 align="center">
+<img alt="cookie_header" src=".github/cookie_header.png" height="300px" />
+</h1>
+
+## store, shows
+
+- Veremos um exemplo [`store`](https://cdn.cs50.net/2020/fall/lectures/9/src9/store/):
+- `application.py` inicializa e configura nosso aplicativo para usar um banco de dados e sessões. Em `index()`, a rota padrão renderiza uma lista de livros armazenados no banco de dados.
+- `templates/books.html` mostra a lista de `books`, bem como um formulário que permite clicar em “Adicionar ao carrinho” para cada um deles.
+- A `/cart` rota, por sua vez, armazena um `id` de uma solicitação POST na sessionvariável de uma lista. Se a solicitação usasse um método GET, entretanto, `/cart` mostraria uma lista de livros com `id`s correspondendo à lista de ids armazenados em `session`.
+- Assim, “carrinhos de compras” em sites podem ser implementados com cookies e variáveis de sessão armazenadas no servidor.
+- Quando visualizamos a fonte gerada por nossa rota padrão, vemos que cada livro tem seu próprio `<form>` elemento, cada um com uma identrada diferente que é ocultada e gerada. Isso idvem do banco de dados SQLite em nosso servidor e é enviado de volta para a `/cart` rota.
+- Veremos outro exemplo, `shows` onde podemos usar JavaScript no **front-end** , ou lado que o usuário vê, e Python no **back-end** , ou lado do servidor.
+- Em `application.py` aqui, vamos abrir um banco de dados, `shows.db`:
+
+```py
+from cs50 import SQL
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+db = SQL("sqlite:///shows.db")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/search")
+def search():
+    shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + request.args.get("q") + "%")
+    return render_template("search.html", shows=shows)
+```
+
+- A `/`rota padrão mostrará um formulário, onde podemos digitar algum termo de pesquisa.
+- O formulário usará o método GET para enviar a consulta de pesquisa `/search`, que por sua vez usará o banco de dados para encontrar uma lista de programas que correspondam. Finalmente, um search.htmlmodelo mostrará a lista de programas.
+- Com JavaScript, podemos mostrar uma lista parcial de resultados à medida que digitamos. Primeiro, usaremos uma função chamada `jsonify` para retornar nossos programas no formato JSON, um formato padrão que o JavaScript pode usar.
+
+```
+@app.route("/search")
+def search():
+    shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + request.args.get("q") + "%")
+    return jsonify(shows)
+```
+
+- Agora podemos enviar uma consulta de pesquisa e ver se obtemos uma lista de dicionários:
+
+<h1 align="center">
+<img alt="json" src=".github/json.png" height="300px" />
+</h1>
+
+- Então, nosso index.htmlmodelo pode converter esta lista em elementos no DOM:
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <title>shows</title>
+    </head>
+    <body>
+
+        <input autocomplete="off" autofocus placeholder="Query" type="search">
+
+        <ul></ul>
+
+        <script crossorigin="anonymous" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+
+            let input = document.querySelector('input');
+            input.addEventListener('keyup', function() {
+                $.get('/search?q=' + input.value, function(shows) {
+                  let html = '';
+                  for (let id in shows)
+                  {
+                      let title = shows[id].title;
+                      html += '<li>' + title + '</li>';
+                  }
+
+                  document.querySelector('ul').innerHTML = html;
+                });
+            });
+
+        </script>
+
+    </body>
+</html>
+```
+
+- Usaremos outra biblioteca, JQuery, para fazer solicitações com mais facilidade.
+- Ouviremos as mudanças no `input` elemento e usaremos o `$.get`, que chama uma função de biblioteca JQuery para fazer uma solicitação GET com o valor da entrada. Em seguida, a resposta será passada para uma função anônima como a variável `shows`, que definirá o DOM com os `<li>` elementos gerados com base nos dados da resposta.
+- `$.get`é uma chamada **AJAX** , que permite ao JavaScript fazer solicitações HTTP adicionais após o carregamento da página, para obter mais dados. Se abrirmos a guia Rede novamente, podemos ver de fato que cada tecla pressionada fez outra solicitação, com uma resposta:
+
+<h1 align="center">
+<img alt="ajax" src=".github/ajax.png" height="300px" />
+</h1>
+
+- Como a solicitação de rede pode ser lenta, a função anônima que passamos $.geté uma função de **retorno de chamada**, que só é chamada depois de obtermos uma resposta do servidor. Enquanto isso, o navegador pode executar outro código JavaScript.
+- Por hoje é isso!
