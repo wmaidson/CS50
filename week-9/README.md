@@ -283,7 +283,7 @@ def index():
 {% endblock %}
 ```
 
-- Teremos um formulário como antes, e teremos um <select>menu com opções para cada esporte.
+- Teremos um formulário como antes, e teremos um `<select>` menu com opções para cada esporte.
 - Em nosso `application.py`, vamos permitir POST para nossa `/register` rota:
 
 
