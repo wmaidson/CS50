@@ -88,7 +88,7 @@ def index():
 - Acontece que podemos fornecer `render_template` qualquer argumento nomeado, como `name`, e ele irá substituí-lo em nosso modelo ou em nosso arquivo HTML com espaços reservados.
 - Em `index.html`, substituiremos `hello, world` por `hello`, para informar ao Flask onde substituir a `name` variável:
 
-```
+```html
 <!DOCTYPE html>
 
 <html lang="en">
@@ -336,7 +336,7 @@ def index():
 
 - Por fim, podemos verificar se o `sport` enviado na solicitação POST está na lista SPORT Sem `application.py`:
 
-```
+```py
 ...
 @app.route("/register", methods=["POST"])
 def register():
@@ -422,7 +422,7 @@ def registrants():
 
 - Em nossa rota, passaremos o `REGISTRANTS` dicionário para o modelo como um parâmetro chamado `registrants`:
 
-```
+```html
 {% extends "layout.html" %}
 
 {% block body %}
@@ -619,7 +619,7 @@ def logout():
 - Geralmente, também precisaremos de um `requirements.txt` que inclua os nomes das bibliotecas que desejamos usar, para que possam ser instaladas em nosso aplicativo, mas as que usamos aqui foram pré-instaladas no IDE.
 - Em nosso `login.html`, teremos um formulário com apenas um nome:
 
-```
+```html
 {% extends "layout.html" %}
 
 {% block body %}
@@ -634,7 +634,7 @@ def logout():
 
 - E no nosso index.html, podemos verificar se session.nameexiste, e mostrar diferentes conteúdos:
 
-```
+```py
 {% extends "layout.html" %}
 
 {% block body %}
@@ -689,7 +689,7 @@ def search():
 - O formulário usará o método GET para enviar a consulta de pesquisa `/search`, que por sua vez usará o banco de dados para encontrar uma lista de programas que correspondam. Finalmente, um search.htmlmodelo mostrará a lista de programas.
 - Com JavaScript, podemos mostrar uma lista parcial de resultados à medida que digitamos. Primeiro, usaremos uma função chamada `jsonify` para retornar nossos programas no formato JSON, um formato padrão que o JavaScript pode usar.
 
-```
+```py
 @app.route("/search")
 def search():
     shows = db.execute("SELECT * FROM shows WHERE title LIKE ?", "%" + request.args.get("q") + "%")
